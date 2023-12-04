@@ -56,18 +56,21 @@ public class GaussMethod {
         try(FileWriter writer = new FileWriter(name, false))
         {
             StringBuilder inM = new StringBuilder();
-            writer.write("\nИсходная матрица: \n");
+            writer.write(m + " " + n + "\n");
+            //writer.write("\nИсходная матрица: \n");
             for (int i = 0; i < m; i++) {
-                inM.append("[ ");
+                //inM.append("[ ");
                 for (int j = 0; j < n + 1; j++) {
                     inM.append(B[i][j]);
                     inM.append(" ");
                 }
-                inM.append("]\n");
+                inM.append("\n");
+                //inM.append("]\n");
                 System.out.println("ALL OK!");
             }
             writer.write(inM.toString());
             writer.write("\nПреобразованная матрица: \n");
+            //writer.write("\n");
             StringBuilder outM = new StringBuilder();
             for (int i = 0; i < m; i++) {
                 outM.append("[ ");
@@ -75,10 +78,12 @@ public class GaussMethod {
                     outM.append(A[i][j]);
                     outM.append(" ");
                 }
+                //outM.append("\n");
                 outM.append("]\n");
             }
             writer.write(outM.toString());
             writer.write("\nРешение: \n");
+            //writer.write("\n");
             writer.write(result.toString());
             writer.flush();
         }

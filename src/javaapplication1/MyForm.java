@@ -3,10 +3,12 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.util.Arrays;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.SimpleAttributeSet;
@@ -39,7 +41,7 @@ public class MyForm extends JFrame{
                 imageLabel.setVisible(true);
                 imageLabel.setBackground(Color.BLACK);
         imageLabel.setBounds(400,200,150,150);
-        setSize(600,800);
+        setSize(620,800);
         button.setBounds( 400, 20,150,20);
         button2.setBounds( 400, 50,150,20);
         button4.setBounds(400,80, 150, 20);
@@ -86,18 +88,23 @@ public class MyForm extends JFrame{
                 int n = Integer.parseInt(nSize.getText());
                 int m = Integer.parseInt(mSize.getText());
                 sample = new GaussMethod(m,n);
-                tableModel = new DefaultTableModel(m,n + 1);
+                //tableModel = new DefaultTableModel(m,n + 1);
 //System.out.println(m+"\n");
-                table = new JTable(tableModel);
+                table = new JTable(m, n + 1);
+
                 table.setBorder(new LineBorder(new Color(41, 101, 222)));
                 table.setSelectionBackground(Color.LIGHT_GRAY);
+                //table.setVisible(true);
+                table.setLocation(10,340);
+                table.setSize(580, m * 20);
+                table.setRowHeight(16);
+                table.setAutoResizeMode(4);
+                //table.setBounds(10, 340, n * 65, m * 20);
                 table.setVisible(true);
-                table.setBounds(10, 340, m * 65, n * 20 - 20);
-//table.setVisible(true);
 //table.getModel().setValueAt(12,0, 0);
                 add(table);
-                lb3.setBounds(10, 340 + n * 20 + 20, 300, 20 );
-                solution.setBounds(10, 340 + n * 20 + 40, 580, 200);
+                lb3.setBounds(10, 340 + m * 20 + 20, 300, 20 );
+                solution.setBounds(10, 340 + m * 20 + 40, 580, 200);
                 revalidate();
             }
             if(event.getSource() == button2) {
@@ -140,8 +147,10 @@ public class MyForm extends JFrame{
             }
             if(event.getSource() == button3) {
                 JFileChooser fc = new JFileChooser();
-                if (fc.showSaveDialog(null) ==
-                        JFileChooser.APPROVE_OPTION) {
+//                FileNameExtensionFilter filter = new FileNameExtensionFilter("Текстовые файлы (*.txt)", "txt");
+//                fc.setFileFilter(filter);
+
+                if (fc.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
                     try (FileWriter fw = new FileWriter(fc.getSelectedFile())) {
                         fw.write("");
                         sample.saveToFile(fc.getSelectedFile());
@@ -153,9 +162,8 @@ public class MyForm extends JFrame{
 // sample.saveToFile();
             }
             if(event.getSource() == button4) {
-                Icon gr = new
-                        ImageIcon("C:\\Users\\higheroffpropane\\Desktop\\3 КУРС\\КУРСАЧ\\coursework\\graph.pngа");
-                        JOptionPane.showMessageDialog(null, "","График зависимости времени решения системы от количества уравнений", JOptionPane.WARNING_MESSAGE, gr);
+                Icon gr = new ImageIcon("C:\\Users\\higheroffpropane\\Desktop\\3 КУРС\\КУРСАЧ\\coursework\\graph.png");
+                JOptionPane.showMessageDialog(null, "","График зависимости времени решения системы от количества уравнений", JOptionPane.WARNING_MESSAGE, gr);
             }
             if(event.getSource() == button5) {
                 for(int i = 0; i < Integer.parseInt(mSize.getText()); i++) {
@@ -178,32 +186,41 @@ public class MyForm extends JFrame{
             }
             if(event.getSource() == button6) {
                 Scanner sc = null;
-                JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+                JFileChooser jfc = new JFileChooser();
                 int returnValue = jfc.showOpenDialog(null);
                 if (returnValue == JFileChooser.APPROVE_OPTION) {
                     File selectedFile = jfc.getSelectedFile();
-//System.out.println(selectedFile.getAbsolutePath());
                     try {
                         sc = new Scanner(new BufferedReader(new FileReader(selectedFile.getAbsolutePath())));
                     } catch (FileNotFoundException e) {
                         throw new RuntimeException(e);
                     }
                 }
+
                 int rows;
                 int columns;
+                int count = 0;
                 assert sc != null;
                 String[] lineIn = sc.nextLine().trim().split(" ");
                 rows = Integer.parseInt(lineIn[0]);
                 columns = Integer.parseInt(lineIn[1]) + 1;
                 sample = new GaussMethod(rows,columns-1);
 //int [][] myArray = new int[rows][columns];
-                while(sc.hasNextLine()) {
+                while(sc.hasNextLine() && (count < rows)) {
                     for (int i = 0; i < rows; i++) {
                         String[] line = sc.nextLine().trim().split(" ");
                         for (int j = 0; j < line.length; j++) {
-                            sample.set(i,j,Integer.parseInt(line[j]));
+                            try {
+                                sample.set(i,j,Float.parseFloat(line[j]));
+                            }
+                            catch (InputMismatchException | NumberFormatException ex) {
+                                System.out.println(ex.getMessage());
+                                JOptionPane.showMessageDialog(null, "Файл заполнен некорректно");
+                                return;
+                            }
 //myArray[i][j] = Integer.parseInt(line[j]);
                         }
+                        count += 1;
                     }
                 }
                 tableModel = new DefaultTableModel(rows, columns);
@@ -212,8 +229,13 @@ public class MyForm extends JFrame{
                 table.setBorder(new LineBorder(new Color(41, 101, 222)));
                 table.setSelectionBackground(Color.LIGHT_GRAY);
                 table.setVisible(true);
-                table.setBounds(10, 140, rows * 125, columns * 20);
+                table.setLocation(10,340);
+                table.setSize(580, rows * 20);
+                table.setRowHeight(16);
+                table.setAutoResizeMode(4);
                 add(table);
+                lb3.setBounds(10, 340 + rows * 20 + 20, 300, 20 );
+                solution.setBounds(10, 340 + rows * 20 + 40, 580, 200);
                 revalidate();
 //System.out.println(Arrays.deepToString(myArray));
                 for(int i = 0; i < rows; i++) {
