@@ -13,7 +13,7 @@ import javax.swing.filechooser.FileSystemView;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyledDocument;
-public class MyForm extends JFrame{
+public class MyForm extends JFrame {
     GaussMethod sample;
     static JButton button, button2, button3, button4, button5, button6;
     static JLabel lb1, lb2, imageLabel, lb3;
@@ -27,9 +27,9 @@ public class MyForm extends JFrame{
         button = new JButton("Заполнить матрицу");
         button2 = new JButton("Решить систему");
         button3 = new JButton("Сохранить в файл");
-        mSize= new JTextField("0");
+        mSize= new JTextField("");
         lb1 = new JLabel("Введите количество уравнений:");
-        nSize= new JTextField("0");
+        nSize= new JTextField("");
         lb2 = new JLabel("Введите количество переменных:");
         lb3 = new JLabel("Решение СЛАУ:");
         button4 = new JButton("Показать график");
@@ -37,23 +37,22 @@ public class MyForm extends JFrame{
         button6 = new JButton("Открыть из файла");
         solution = new JTextPane();
         imageLabel = new JLabel(new
-                ImageIcon("C:\\Users\\higheroffpropane\\Desktop\\3 КУРС\\КУРСАЧ\\coursework\\ea702cc03837dab3bbed8d5c64266130.png"));
+                ImageIcon("C:\\Users\\higheroffpropane\\Desktop\\3 КУРС\\КУРСАЧ\\coursework\\line.png"));
                 imageLabel.setVisible(true);
-                imageLabel.setBackground(Color.BLACK);
-        imageLabel.setBounds(400,200,150,150);
-        setSize(620,800);
-        button.setBounds( 400, 20,150,20);
-        button2.setBounds( 400, 50,150,20);
-        button4.setBounds(400,80, 150, 20);
-        button5.setBounds(400,110, 150, 20);
-        button6.setBounds(400,140, 150, 20);
-        button3.setBounds( 400, 170,150,20);
+                //imageLabel.setBackground(Color.BLACK);
+        imageLabel.setBounds(10,120,540,90);
+        setSize(600,800);
+        button.setBounds( 240, 20,150,20);
+        button2.setBounds(240,80, 150, 20);
+        button5.setBounds(240,50, 150, 20);
+
+        button4.setBounds(400,20, 150, 20);
+        button6.setBounds(400,50, 150, 20);
+        button3.setBounds(400,80, 150, 20);
         mSize.setBounds(10,20,200,30);
         nSize.setBounds(10,70,200,30);
-        lb1.setBounds(mSize.getX(), mSize.getY() - 20, 300,
-                20 );
-        lb2.setBounds(nSize.getX(), nSize.getY() - 20, 300,
-                20 );
+        lb1.setBounds(mSize.getX(), mSize.getY() - 20, 300, 20 );
+        lb2.setBounds(nSize.getX(), nSize.getY() - 20, 300, 20 );
 //        lb3.setBounds(10, 510, 300, 20 );
 //        solution.setBounds(10, 530, 580, 200);
 //table = new JTable(1,0);
@@ -87,24 +86,29 @@ public class MyForm extends JFrame{
                 remove(table);
                 int n = Integer.parseInt(nSize.getText());
                 int m = Integer.parseInt(mSize.getText());
+                if (n > 20 | m > 20) {
+                    JOptionPane.showMessageDialog(null, "Слишком большое число"," ", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
                 sample = new GaussMethod(m,n);
-                //tableModel = new DefaultTableModel(m,n + 1);
-//System.out.println(m+"\n");
                 table = new JTable(m, n + 1);
-
                 table.setBorder(new LineBorder(new Color(41, 101, 222)));
                 table.setSelectionBackground(Color.LIGHT_GRAY);
                 //table.setVisible(true);
-                table.setLocation(10,340);
-                table.setSize(580, m * 20);
+                table.setLocation(10,150);
+                table.setSize(540, m*20);
                 table.setRowHeight(16);
                 table.setAutoResizeMode(4);
+                JScrollPane scrollPane = new JScrollPane(table);
+                add(scrollPane);
+                //scrollPane.setVisible(true);
                 //table.setBounds(10, 340, n * 65, m * 20);
-                table.setVisible(true);
+                //table.setVisible(true);
 //table.getModel().setValueAt(12,0, 0);
                 add(table);
-                lb3.setBounds(10, 340 + m * 20 + 20, 300, 20 );
-                solution.setBounds(10, 340 + m * 20 + 40, 580, 200);
+                setVisible(true);
+                lb3.setBounds(10, 150 + m * 20 + 20, 300, 20 );
+                solution.setBounds(10, 150 + m * 20 + 40, 540, 200);
                 revalidate();
             }
             if(event.getSource() == button2) {
