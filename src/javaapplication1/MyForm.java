@@ -2,21 +2,17 @@ package javaapplication1;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
-import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.Scanner;
-import java.util.concurrent.ThreadLocalRandom;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
-import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.filechooser.FileSystemView;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyledDocument;
 public class MyForm extends JFrame {
     GaussMethod sample;
-    static JButton button, button2, button3, button4, button5, button6;
-    static JLabel lb1, lb2, imageLabel, lb3;
+    static JButton buttonFill, buttonResolve, buttonSave, buttonShowGraph, buttonRandFill, buttonOpen;
+    static JLabel lb1, lb2, lb3, imageLabel;
     static JTextField mSize, nSize;
     static JTable table;
     static DefaultTableModel tableModel;
@@ -24,44 +20,39 @@ public class MyForm extends JFrame {
     Checked check = new Checked();
     public MyForm() {
         super("Решение СЛАУ методом Гаусса");
-        button = new JButton("Заполнить матрицу");
-        button2 = new JButton("Решить систему");
-        button3 = new JButton("Сохранить в файл");
+        buttonFill = new JButton("Заполнить матрицу");
+        buttonResolve = new JButton("Решить систему");
+        buttonSave = new JButton("Сохранить в файл");
+        buttonShowGraph = new JButton("Показать график");
+        buttonRandFill = new JButton("Заполнить случайно");
+        buttonOpen = new JButton("Открыть из файла");
+
+        nSize= new JTextField("");
         mSize= new JTextField("");
         lb1 = new JLabel("Введите количество уравнений:");
-        nSize= new JTextField("");
         lb2 = new JLabel("Введите количество переменных:");
         lb3 = new JLabel("Решение СЛАУ:");
-        button4 = new JButton("Показать график");
-        button5 = new JButton("Заполнить случайно");
-        button6 = new JButton("Открыть из файла");
         solution = new JTextPane();
-        imageLabel = new JLabel(new
-                ImageIcon("C:\\Users\\higheroffpropane\\Desktop\\3 КУРС\\КУРСАЧ\\coursework\\line.png"));
-                imageLabel.setVisible(true);
-                //imageLabel.setBackground(Color.BLACK);
+        imageLabel = new JLabel(new ImageIcon("C:\\Users\\higheroffpropane\\Desktop\\3 КУРС\\КУРСАЧ\\coursework\\line.png"));
+        imageLabel.setVisible(true);
         imageLabel.setBounds(10,120,540,90);
         setSize(600,800);
-        button.setBounds( 240, 20,150,20);
-        button2.setBounds(240,80, 150, 20);
-        button5.setBounds(240,50, 150, 20);
-
-        button4.setBounds(400,20, 150, 20);
-        button6.setBounds(400,50, 150, 20);
-        button3.setBounds(400,80, 150, 20);
+        buttonFill.setBounds( 240, 20,150,20);
+        buttonResolve.setBounds(240,80, 150, 20);
+        buttonRandFill.setBounds(240,50, 150, 20);
+        buttonShowGraph.setBounds(400,20, 150, 20);
+        buttonOpen.setBounds(400,50, 150, 20);
+        buttonSave.setBounds(400,80, 150, 20);
         mSize.setBounds(10,20,200,30);
         nSize.setBounds(10,70,200,30);
         lb1.setBounds(mSize.getX(), mSize.getY() - 20, 300, 20 );
         lb2.setBounds(nSize.getX(), nSize.getY() - 20, 300, 20 );
-//        lb3.setBounds(10, 510, 300, 20 );
-//        solution.setBounds(10, 530, 580, 200);
-//table = new JTable(1,0);
-        add(button);
-        add(button2);
-        add(button3);
-        add(button4);
-        add(button5);
-        add(button6);
+        add(buttonFill);
+        add(buttonResolve);
+        add(buttonSave);
+        add(buttonShowGraph);
+        add(buttonRandFill);
+        add(buttonOpen);
         add(mSize);
         add(lb1);
         add(nSize);
@@ -71,18 +62,18 @@ public class MyForm extends JFrame {
         add(imageLabel);
         setLayout(null);
         setVisible(true);
-        button.addActionListener(check);
-        button2.addActionListener(check);
-        button3.addActionListener(check);
-        button4.addActionListener(check);
-        button5.addActionListener(check);
-        button6.addActionListener(check);
+        buttonFill.addActionListener(check);
+        buttonResolve.addActionListener(check);
+        buttonSave.addActionListener(check);
+        buttonShowGraph.addActionListener(check);
+        buttonRandFill.addActionListener(check);
+        buttonOpen.addActionListener(check);
         table = new JTable(tableModel);
     }
     private class Checked implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent event) {
-            if(event.getSource() == button) { // событие произошло у кнопки
+            if(event.getSource() == buttonFill) { // событие произошло у кнопки
                 remove(table);
                 int n = Integer.parseInt(nSize.getText());
                 int m = Integer.parseInt(mSize.getText());
@@ -99,19 +90,13 @@ public class MyForm extends JFrame {
                 table.setSize(540, m*20);
                 table.setRowHeight(16);
                 table.setAutoResizeMode(4);
-                JScrollPane scrollPane = new JScrollPane(table);
-                add(scrollPane);
-                //scrollPane.setVisible(true);
-                //table.setBounds(10, 340, n * 65, m * 20);
-                //table.setVisible(true);
-//table.getModel().setValueAt(12,0, 0);
                 add(table);
                 setVisible(true);
                 lb3.setBounds(10, 150 + m * 20 + 20, 300, 20 );
                 solution.setBounds(10, 150 + m * 20 + 40, 540, 200);
                 revalidate();
             }
-            if(event.getSource() == button2) {
+            if(event.getSource() == buttonResolve) {
                 Double val = null;
                 String str;
                 for(int i = 0; i <
@@ -120,9 +105,7 @@ public class MyForm extends JFrame {
                             Integer.parseInt(nSize.getText())+1; j++) {
                         try {
                             str = table.getModel().getValueAt(i, j).toString();
-//System.out.print("STR:" + str + " ");
                             val = Double.valueOf(str);
-//System.out.println("DOUBLE:" + val + " ");
                             sample.set(i, j, val);
                         }
                         catch (NumberFormatException ex) {
@@ -130,9 +113,7 @@ public class MyForm extends JFrame {
                             JOptionPane.showMessageDialog(null, "Таблица заполнена некорректно");
                             return;
                         }
-//System.out.print(table.getModel().getValueAt(i,j) + " ");
                     }
-//System.out.println();
                 }
                 System.out.println(sample);
                 sample.rightGaussianStroke();
@@ -146,14 +127,10 @@ public class MyForm extends JFrame {
                 }
                 catch(Exception e) { System.out.println(e);
                 }
-// solution.setText(sample.answer());
                 System.out.println(sample.answer());
             }
-            if(event.getSource() == button3) {
+            if(event.getSource() == buttonSave) {
                 JFileChooser fc = new JFileChooser();
-//                FileNameExtensionFilter filter = new FileNameExtensionFilter("Текстовые файлы (*.txt)", "txt");
-//                fc.setFileFilter(filter);
-
                 if (fc.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
                     try (FileWriter fw = new FileWriter(fc.getSelectedFile())) {
                         fw.write("");
@@ -163,19 +140,17 @@ public class MyForm extends JFrame {
                         System.out.println("Всё погибло!");
                     }
                 }
-// sample.saveToFile();
             }
-            if(event.getSource() == button4) {
+            if(event.getSource() == buttonShowGraph) {
                 Icon gr = new ImageIcon("C:\\Users\\higheroffpropane\\Desktop\\3 КУРС\\КУРСАЧ\\coursework\\graph.png");
                 JOptionPane.showMessageDialog(null, "","График зависимости времени решения системы от количества уравнений", JOptionPane.WARNING_MESSAGE, gr);
             }
-            if(event.getSource() == button5) {
+            if(event.getSource() == buttonRandFill) {
                 for(int i = 0; i < Integer.parseInt(mSize.getText()); i++) {
                     for(int j = 0; j < Integer.parseInt(nSize.getText())+1; j++) {
                         try {
                             double rand = (int)(Math.random() * 50);
                             table.getModel().setValueAt(rand, i, j);
-// val = Double.valueOf(str);
                             sample.set(i, j, rand);
                         }
                         catch (NumberFormatException ex) {
@@ -183,12 +158,10 @@ public class MyForm extends JFrame {
                             JOptionPane.showMessageDialog(null, "Таблица заполнена некорректно");
                             return;
                         }
-//System.out.print(table.getModel().getValueAt(i,j) + " ");
                     }
-//System.out.println();
                 }
             }
-            if(event.getSource() == button6) {
+            if(event.getSource() == buttonOpen) {
                 Scanner sc = null;
                 JFileChooser jfc = new JFileChooser();
                 int returnValue = jfc.showOpenDialog(null);
@@ -209,7 +182,6 @@ public class MyForm extends JFrame {
                 rows = Integer.parseInt(lineIn[0]);
                 columns = Integer.parseInt(lineIn[1]) + 1;
                 sample = new GaussMethod(rows,columns-1);
-//int [][] myArray = new int[rows][columns];
                 while(sc.hasNextLine() && (count < rows)) {
                     for (int i = 0; i < rows; i++) {
                         String[] line = sc.nextLine().trim().split(" ");
@@ -222,13 +194,11 @@ public class MyForm extends JFrame {
                                 JOptionPane.showMessageDialog(null, "Файл заполнен некорректно");
                                 return;
                             }
-//myArray[i][j] = Integer.parseInt(line[j]);
                         }
                         count += 1;
                     }
                 }
                 tableModel = new DefaultTableModel(rows, columns);
-//System.out.println(m+"\n");
                 table = new JTable(tableModel);
                 table.setBorder(new LineBorder(new Color(41, 101, 222)));
                 table.setSelectionBackground(Color.LIGHT_GRAY);
@@ -241,7 +211,6 @@ public class MyForm extends JFrame {
                 lb3.setBounds(10, 340 + rows * 20 + 20, 300, 20 );
                 solution.setBounds(10, 340 + rows * 20 + 40, 580, 200);
                 revalidate();
-//System.out.println(Arrays.deepToString(myArray));
                 for(int i = 0; i < rows; i++) {
                     for(int j = 0; j < columns; j++) {
                         try {
@@ -252,9 +221,7 @@ public class MyForm extends JFrame {
                             JOptionPane.showMessageDialog(null, "Таблица заполнена некорректно");
                             return;
                         }
-//System.out.print(table.getModel().getValueAt(i,j) + " ");
                     }
-//System.out.println();
                 }
             }
         }

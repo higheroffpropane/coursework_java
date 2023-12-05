@@ -27,19 +27,10 @@ public class GaussMethod {
         this.m = m;
         this.n = n;
     }
-    public void fillMatrix() {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Enter matrix:");
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n+1; j++) {
-                double rand = ThreadLocalRandom.current().nextInt(1,50);
-                A[i][j] = rand;
-            }
-        }
-    }
+
     public void set(int row, int col, double val) {
-        if(row > m) return;
-        else if(col > n+1) return;
+        if (row > m) return;
+        else if (col > n+1) return;
         else {
             A[row][col] = val;
             B[row][col] = val;
@@ -57,20 +48,16 @@ public class GaussMethod {
         {
             StringBuilder inM = new StringBuilder();
             writer.write(m + " " + n + "\n");
-            //writer.write("\nИсходная матрица: \n");
             for (int i = 0; i < m; i++) {
-                //inM.append("[ ");
                 for (int j = 0; j < n + 1; j++) {
                     inM.append(B[i][j]);
                     inM.append(" ");
                 }
                 inM.append("\n");
-                //inM.append("]\n");
                 System.out.println("ALL OK!");
             }
             writer.write(inM.toString());
             writer.write("\nПреобразованная матрица: \n");
-            //writer.write("\n");
             StringBuilder outM = new StringBuilder();
             for (int i = 0; i < m; i++) {
                 outM.append("[ ");
@@ -78,12 +65,10 @@ public class GaussMethod {
                     outM.append(A[i][j]);
                     outM.append(" ");
                 }
-                //outM.append("\n");
                 outM.append("]\n");
             }
             writer.write(outM.toString());
             writer.write("\nРешение: \n");
-            //writer.write("\n");
             writer.write(result.toString());
             writer.flush();
         }
@@ -127,7 +112,6 @@ public class GaussMethod {
                 }
             }
         }
-//Boolean[] mark = new Boolean[m]; // отмечаем одинаковые строки в расширенной матрице ~A СЛАУ
         for (int i = 0; i < m; i++) {
             mark[i] = Boolean.FALSE;
         }
@@ -220,7 +204,6 @@ public class GaussMethod {
             result.append("Инициализация свободных переменных: \n"); // вывод возможного варианта ответа
 // полагаем, что значение переменной равно 1,
 // чтобы найти значения зависимых переменных
-//System.out.println("Initialization of free variables:");
             for (int i = 0; i < n; i++) {
                 if (marked_variables[i] == Boolean.TRUE) {
                     answer[i] = 1.0;
@@ -228,16 +211,13 @@ public class GaussMethod {
                     result.append(i);
                     result.append("-я переменная зависимая: ");
                     result.append(answer[i]);
-//System.out.println("Let: " + i + "-th variable assigned:" + answer[i]);
                 }
             }
             result.append("\nРезультат:\n");
-//System.out.println("Answer:"); //выводим в консоль результирующую матрицу ~A
             for (int i = 0; i < n; i++) {
                 if (marked_variables[i] == Boolean.TRUE) {
                     result.append(i);
                     result.append("-я переменная зависимая\n");
-//System.out.println(i + "-ья переменная зависимая");
                 }
             }
             for (int i = bottom_border; i >= 0; i--) {
@@ -252,7 +232,6 @@ public class GaussMethod {
                 result.append("X[");
                 result.append(cur_variable);
                 result.append("] = ");
-//System.out.print("X[" + cur_variable + "] = ");
                 for (int j = 0; j < n; j++) {
                     if (marked_variables[j] == Boolean.TRUE) {
                         cur_sum += answer[j] * A[i][j];
@@ -263,13 +242,10 @@ public class GaussMethod {
                         result.append(") * X[");
                         result.append(j);
                         result.append("] + ");
-//System.out.print("(" + -A[i][j] + "/" + A[i][cur_variable] + ")" + "*X[" + j + "] + ");
                     }
                 }
                 result.append(A[i][n]);
                 result.append("\n");
-//System.out.println(A[i][n]);
-//System.out.println();
                 cur_sum *= -1;
                 cur_sum += A[i][n];
                 for (int j = 0; j < n; j++) {
@@ -280,21 +256,12 @@ public class GaussMethod {
                     }
                 }
             }
-/*
-for (int i = 0; i < n; i++) {
-if (Math.abs(answer[i]) < EPS) answer[i] =
-0.0;
-}
-*/
             result.append("\nОдно из возможных решений, например: ");
-//System.out.println("One of the solutions:");
             for (int k = 0; k < n - 1; k++) {
                 result.append(answer[k]);
                 result.append(" ");
-//System.out.print(answer[k] + " ");
             }
             result.append(answer[n-1]);
-//System.out.println(answer[n - 1]);
         }
     }
     @Override
