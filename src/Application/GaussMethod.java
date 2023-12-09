@@ -1,8 +1,6 @@
-package javaapplication1;
+package Application;
 import java.io.*;
-import java.util.Arrays;
-import java.util.Scanner;
-import java.util.concurrent.ThreadLocalRandom;
+
 public class GaussMethod {
     public static final double EPS = 1E-5;
     private Double[][] A; // n+1 для свободного коэффициента
@@ -19,7 +17,7 @@ public class GaussMethod {
         result = new StringBuilder();
     }
     GaussMethod(int m, int n) {
-        A = new Double[m][n+1]; // n+1 для свободного коэффициента
+        A = new Double[m][n+1];
         B = new Double[m][n+1];
         answer = new Double[n];
         mark = new Boolean[m];
@@ -82,12 +80,12 @@ public class GaussMethod {
             double maxv = 0;
             int position_of_line_with_maxv = k;
             for (int i = k; i < m; i++) {
-                if (Math.abs(A[i][k]) > maxv) { // search max elements at the string
+                if (Math.abs(A[i][k]) > maxv) {
                     maxv = Math.abs(A[i][k]);
                     position_of_line_with_maxv = i;
                 }
             }
-            for (int j = 0; j < n + 1; j++) { // swap strings
+            for (int j = 0; j < n + 1; j++) {
                 double tmp = A[k][j];
                 A[k][j] = A[position_of_line_with_maxv][j];
                 A[position_of_line_with_maxv][j] = tmp;
@@ -142,13 +140,13 @@ public class GaussMethod {
                 mark[i] = Boolean.TRUE;
             }
             if (cnt_of_zeroes == n && Math.abs(A[i][n]) > EPS) {
-                System.out.println("The system of equations is inconsistent"); // система не имеет решений
+                System.out.println("Система не имеет решений");
                 return;
             }
         }
     }
     public void backGaussianStroke() {
-        result.delete(0, result.length()); // очищаем строку результат
+        result.delete(0, result.length());
         for (int i = 0; i < m; i++) {      // все ненулевые строки "переносим вперёд":
             for (int j = i+1; j < m; j++) {
                 if (mark[i] == Boolean.TRUE && mark[j] == Boolean.FALSE) {
@@ -280,14 +278,14 @@ public class GaussMethod {
     public String answer() {
         return result.toString();
     }
-    public static void Swap_Lines(int k1, int k2, int n, Double[][] A, Boolean[] mark) { // перестановка строк
+    public static void Swap_Lines(int k1, int k2, int n, Double[][] A, Boolean[] mark) {
         for (int j = 0; j < n; j++) {
             Double tmp;
             tmp = A[k1][j];
             A[k1][j] = A[k2][j];
             A[k2][j] = tmp;
         }
-        Boolean tmp; // для проверки строк на одинаковость
+        Boolean tmp;
         tmp = mark[k1];
         mark[k1] = mark[k2];
         mark[k2] = tmp;

@@ -1,11 +1,8 @@
-package javaapplication1;
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
+package Application;
 import javax.swing.*;
-public class JavaApplication1 {
+public class JavaApplication {
     public static void main(String[] args) {
-        MyForm pr = new MyForm();
+        Form1 pr = new Form1();
         pr.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 /* для запуска приложения из консоли
 long start = System.nanoTime();

@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="runCoursework" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="Application.JavaApplication" />
+    <module name="coursework" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

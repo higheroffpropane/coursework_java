@@ -1,4 +1,4 @@
-package javaapplication1;
+package Application;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
@@ -9,7 +9,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyledDocument;
-public class MyForm extends JFrame {
+public class Form1 extends JFrame {
     GaussMethod sample;
     static JButton buttonFill, buttonResolve, buttonSave, buttonShowGraph, buttonRandFill, buttonOpen;
     static JLabel lb1, lb2, lb3, imageLabel;
@@ -18,7 +18,7 @@ public class MyForm extends JFrame {
     static DefaultTableModel tableModel;
     static JTextPane solution;
     Checked check = new Checked();
-    public MyForm() {
+    public Form1() {
         super("Решение СЛАУ методом Гаусса");
         buttonFill = new JButton("Заполнить матрицу");
         buttonResolve = new JButton("Решить систему");
@@ -151,7 +151,7 @@ public class MyForm extends JFrame {
                         try {
                             double rand = (int)(Math.random() * 50);
                             table.getModel().setValueAt(rand, i, j);
-                            sample.set(i, j, rand);
+                            //sample.set(i, j, rand);
                         }
                         catch (NumberFormatException ex) {
                             System.out.println(ex.getMessage());
